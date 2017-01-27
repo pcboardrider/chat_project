@@ -12,11 +12,20 @@ public class Student implements Comparable<Student> {
 	private String response1;
 	private String response2;
 	
-	public Student(String fName, String lName, double s, String r1, String r2) {
+	public Student(String fName, String lName, String s, String r1, String r2) {
 		super();
 		this.firstName = fName;
 		this.lastName = lName;
-		this.score = s;
+		try
+		{
+		  Double.parseDouble(s);
+		  this.score = Double.parseDouble(s);
+		}
+		catch(NumberFormatException e)
+		{
+		  this.score = 0;
+		}
+		
 		this.response1 = r1;
 		this.response2 = r2;
 	}
@@ -59,7 +68,7 @@ public class Student implements Comparable<Student> {
 	
 	@Override
 	public String toString() { 
-		return String.format("%s %s", getFirstName(), getLastName());
+		return String.format("%s %s %.1f", getFirstName(), getLastName(), getScore());
 	}
 
 	@Override
