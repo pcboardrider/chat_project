@@ -48,7 +48,7 @@ public class Chat {
 		String[] details = line.split(",");
 		Student nextStudent = null;
 		try {
-			nextStudent = new Student(details[0], details[1], details[2], details[3], details[4]);
+			nextStudent = new Student(details[0], details[1], details[2], details[3]);
 		} catch (NumberFormatException | IndexOutOfBoundsException e) {
 			System.err.printf("%s .. could not be read as a student.%n", line);
 		}

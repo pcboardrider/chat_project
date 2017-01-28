@@ -5,29 +5,29 @@
 //
 package chatProject;
 
+import java.util.ArrayList;
+
 public class Student implements Comparable<Student> {
 	private String firstName;
 	private String lastName;
 	private double score;
-	private String response1;
-	private String response2;
+	//private String words;
+	String[] responses = new String[5];
 	
-	public Student(String fName, String lName, String s, String r1, String r2) {
+	public Student(String fName, String lName, String s, String words) {
 		super();
 		this.firstName = fName;
 		this.lastName = lName;
 		try
 		{
-		  Double.parseDouble(s);
 		  this.score = Double.parseDouble(s);
 		}
 		catch(NumberFormatException e)
 		{
 		  this.score = 0;
 		}
-		
-		this.response1 = r1;
-		this.response2 = r2;
+		this.responses = words.split("/");
+		//this.words = w;
 	}
 	
 	public Student() {
@@ -58,13 +58,7 @@ public class Student implements Comparable<Student> {
 		this.score = sc;
 	}
 	
-	public String getResponse1() {
-		return response1;
-	}
 	
-	public String getResponse2() {
-		return response2;
-	}
 	
 	@Override
 	public String toString() { 

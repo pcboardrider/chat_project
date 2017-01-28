@@ -17,10 +17,16 @@ public class Group implements Comparable<Group>{
 	}
 
 	private void groupChat() {
-		System.out.printf("%s: %s%n", student1, student1.getResponse1());
-		System.out.printf("%s: %s%n", student2, student2.getResponse1());
-		System.out.printf("%s: %s%n", student1, student1.getResponse2());
-		System.out.printf("%s: %s%n", student2, student2.getResponse2());
+		int length;
+		if (student1.responses.length < student2.responses.length) {
+			length = student1.responses.length;
+		} else {
+			length = student2.responses.length;
+		}
+		for (int i = 0; i < length; i++) {
+			System.out.printf("%s: %s%n", student1, student1.responses[i]);
+			System.out.printf("%s: %s%n", student2, student2.responses[i]);
+		}
 	}
 
 	@Override
