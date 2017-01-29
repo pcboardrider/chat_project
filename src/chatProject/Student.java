@@ -1,18 +1,13 @@
-// Assignment: Chat
-// Program:    Student
-// Created:    Jan 24, 2017
-// Author:     lcattle - Lauren Ribeiro
-//
 package chatProject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Student implements Comparable<Student> {
 	private String firstName;
 	private String lastName;
 	private double score;
-	//private String words;
-	String[] responses = new String[5];
+	ArrayList<String> responses;
 	
 	public Student(String fName, String lName, String s, String words) {
 		super();
@@ -26,30 +21,17 @@ public class Student implements Comparable<Student> {
 		{
 		  this.score = 0;
 		}
-		this.responses = words.split("/");
-		//this.words = w;
-	}
-	
-	public Student() {
-		
+		responses = new ArrayList<String>(Arrays.asList(words.split("/")));
 	}
 	
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
 	public double getScore() {
 		return score;
 	}
@@ -62,7 +44,7 @@ public class Student implements Comparable<Student> {
 	
 	@Override
 	public String toString() { 
-		return String.format("%s %s %.1f", getFirstName(), getLastName(), getScore());
+		return String.format("%s %s", getFirstName(), getLastName());
 	}
 
 	@Override

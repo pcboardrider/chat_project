@@ -1,11 +1,5 @@
-// Assignment: Chat
-// Program:    Chat
-// Created:    Jan 25, 2017
-// Author:     lcattle - Lauren Ribeiro
-//
 package chatProject;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -19,8 +13,7 @@ public class Chat {
 		TreeSet<Group> groups = new TreeSet<>();
 		Student groupMember1 = null;
 		Student groupMember2 = null;
-		try (Scanner reader = new Scanner(
-				Chat.class.getResourceAsStream("Students.csv"))) {
+		try (Scanner reader = new Scanner(Chat.class.getResourceAsStream("Students.csv"))) {
 			while (reader.hasNextLine()) {
 				String line = reader.nextLine();
 				Student student = getStudent(line);
@@ -34,13 +27,11 @@ public class Chat {
 						groupMember1 = null;
 						groupMember2 = null;
 					}
-					// System.out.println(student);
 				}
 			}
 		}
 //		for (Student s : set) {
-//			System.out.println(s);
-//			
+//			System.out.println(s);	
 //		}
 	}
 
