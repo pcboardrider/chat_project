@@ -7,7 +7,6 @@ public class Group implements Comparable<Group>{
 	public Group(Student s1, Student s2) {
 		this.student1 = s1;
 		this.student2 = s2;
-		//System.out.println("\n" + s1 + " and " + s2);
 		groupChat();
 	}
 
@@ -30,6 +29,12 @@ public class Group implements Comparable<Group>{
 				System.out.printf("%s: %n", student2);
 			}
 		}
+		System.out.println();
+	}
+
+	@Override
+	public String toString() {
+		return "Group [student1:" + student1 + ", student2:" + student2 + "]";
 	}
 
 	@Override
