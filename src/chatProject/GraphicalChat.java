@@ -37,9 +37,6 @@ public class GraphicalChat extends JFrame {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		add(contentPanel);
 		
-		keys = new ArrayList<Integer>();
-		Border blackline = BorderFactory.createLineBorder(Color.black, 1);
-		
 		StudentSet thisSet = new StudentSet();
 		Random rand = new Random();
 		int randomGroup = rand.nextInt(thisSet.groups.size());
@@ -51,17 +48,14 @@ public class GraphicalChat extends JFrame {
 				}
 			}
 		chatOutput.setEditable(false);
-		chatOutput.setLineWrap(true);
-		chatOutput.setWrapStyleWord(true);
-		chatOutput.setBorder(blackline);
+		formatArea(chatOutput);
 		
 		scrollOutput = new JScrollPane(chatOutput);
 		contentPanel.add(scrollOutput);
 		
 		chatInput = new JTextArea();
-		chatInput.setBorder(blackline);
-		chatInput.setLineWrap(true);
-		chatInput.setWrapStyleWord(true);
+		formatArea(chatInput);
+		keys = new ArrayList<Integer>();
 		chatInput.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -97,6 +91,13 @@ public class GraphicalChat extends JFrame {
 	private void updateChat() {
 		chatOutput.append("Comment: " + chatInput.getText() + "\n");
 		chatInput.setText("");
+	}
+	
+	private void formatArea(JTextArea area) {
+		Border blackline = BorderFactory.createLineBorder(Color.black, 1);
+		area.setLineWrap(true);
+		area.setWrapStyleWord(true);
+		area.setBorder(blackline);
 	}
 
 	public static void main(String[] args) {
