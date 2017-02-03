@@ -1,5 +1,6 @@
 package chatProject;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -7,7 +8,7 @@ import java.util.TreeSet;
 
 public class StudentSet {
 	Set<Student> set = new HashSet<>();
-	TreeSet<Group> groups = new TreeSet<>();
+	ArrayList<Group> groups = new ArrayList<>();
 	
 	public StudentSet() {
 		readStudents();
@@ -38,10 +39,6 @@ public class StudentSet {
 				groupMember1 = null;
 				groupMember2 = null;
 			}
-		}
-		System.out.println("Ordered group list");
-		for (Group g : groups) {
-			System.out.println(g);
 		}
 	}
 

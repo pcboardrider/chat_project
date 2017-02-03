@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -39,8 +40,16 @@ public class GraphicalChat extends JFrame {
 		keys = new ArrayList<Integer>();
 		Border blackline = BorderFactory.createLineBorder(Color.black, 1);
 		
+		StudentSet thisSet = new StudentSet();
+		Random rand = new Random();
+		int randomGroup = rand.nextInt(thisSet.groups.size());
+		
 		chatOutput = new JTextArea(30,1);
-		chatOutput.setText("output ends up here");
+		for (Group g : thisSet.groups) {
+			if (thisSet.groups.indexOf(g) == randomGroup) {
+				chatOutput.setText(g.groupChat().toString());
+				}
+			}
 		chatOutput.setEditable(false);
 		chatOutput.setLineWrap(true);
 		chatOutput.setWrapStyleWord(true);
@@ -51,7 +60,6 @@ public class GraphicalChat extends JFrame {
 		
 		chatInput = new JTextArea();
 		chatInput.setBorder(blackline);
-		chatInput.setText("input goes here");
 		chatInput.setLineWrap(true);
 		chatInput.setWrapStyleWord(true);
 		chatInput.addKeyListener(new KeyAdapter() {
