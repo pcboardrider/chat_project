@@ -9,22 +9,22 @@ public class Group implements Comparable<Group>{
 		this.student2 = s2;
 	}
 
-	StringBuffer groupChat() {
+	public StringBuffer groupChat() {
 		StringBuffer sb = new StringBuffer();
 		int length;
-		if (student1.responses.size() > student2.responses.size()) {
-			length = student1.responses.size();
+		if (student1.getResponses().size() > student2.getResponses().size()) {
+			length = student1.getResponses().size();
 		} else {
-			length = student2.responses.size();
+			length = student2.getResponses().size();
 		}
 		for (int i = 0; i < length; i++) {
 			try {
-				sb.append(student1 + ": " + student1.responses.get(i) + "\n");
+				sb.append(student1 + ": " + student1.getResponses().get(i) + "\n");
 			} catch (IndexOutOfBoundsException e) {
 				sb.append(student1 + ": \n");
 			}
 			try {
-				sb.append(student2 + ": " + student2.responses.get(i) + "\n");
+				sb.append(student2 + ": " + student2.getResponses().get(i) + "\n");
 			} catch (IndexOutOfBoundsException e) {
 				sb.append(student2 + ": \n");
 			}

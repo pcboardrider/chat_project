@@ -19,9 +19,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-
 public class GraphicalChat extends JFrame {
 	
+	private static final long serialVersionUID = 6980588082265785090L;
 	private JPanel contentPanel;
 	private JScrollPane scrollOutput;
 	private JScrollPane scrollInput;
