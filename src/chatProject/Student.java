@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Student implements Comparable<Student> {
-	
 	private String firstName;
 	private String lastName;
 	private double score;
-	ArrayList<String> responses;
+	private ArrayList<String> responses;
 	
 	public Student(String fName, String lName, String s, String words) {
-		super();
 		this.firstName = fName;
 		this.lastName = lName;
 		try
@@ -22,7 +20,7 @@ public class Student implements Comparable<Student> {
 		{
 		  this.score = 0;
 		}
-		responses = new ArrayList<String>(Arrays.asList(words.split("/")));
+		setResponses(new ArrayList<String>(Arrays.asList(words.split("/"))));
 	}
 	
 	public String getFirstName() {
@@ -32,13 +30,13 @@ public class Student implements Comparable<Student> {
 	public String getLastName() {
 		return lastName;
 	}
-
-	public double getScore() {
-		return score;
-	}
 	
-	public void setScore(double sc) {
-		this.score = sc;
+	public ArrayList<String> getResponses() {
+		return responses;
+	}
+
+	public void setResponses(ArrayList<String> responses) {
+		this.responses = responses;
 	}
 	
 	@Override
