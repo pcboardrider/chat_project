@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 public class ClientGUI extends JFrame {
 
 	private int port = 8090;
+	private InetAddress address;
 
 	public ClientGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,12 +53,12 @@ public class ClientGUI extends JFrame {
 
 	private void tryIP(String iP) {
 		try {
-			InetAddress address = InetAddress.getByName(iP);
-			System.out.println(address);
+			address = InetAddress.getByName(iP);
 			if (serverListening(address, port)) {
-				startThread();
+				startClient();
 			} else {
 				startServer();
+				startClient();
 			}
 
 		} catch (UnknownHostException e) {
@@ -66,13 +67,11 @@ public class ClientGUI extends JFrame {
 	}
 
 	private void startServer() {
-		System.out.println("starting a server");
 		new Server(port);
 	}
 
-	private void startThread() {
-		// TODO Auto-generated method stub
-		System.out.println("starting a thread");
+	private void startClient() {
+		new Client(address, port);
 	}
 
 	private boolean serverListening(InetAddress address, int port) {
@@ -87,6 +86,7 @@ public class ClientGUI extends JFrame {
 				try {
 					s.close();
 				} catch (Exception e) {
+					System.out.println("Couldn't close test Socket");
 				}
 			}
 		}
