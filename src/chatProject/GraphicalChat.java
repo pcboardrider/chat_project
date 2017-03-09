@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -63,7 +66,8 @@ public class GraphicalChat extends JFrame {
 					keys.add(new Integer(e.getKeyCode()));
 				}
 				if (keys.contains(new Integer(KeyEvent.VK_CONTROL)) && keys.contains(new Integer(KeyEvent.VK_ENTER))) {
-					updateChat();
+					//updateChat();
+					getMessage();
 				}
 			}
 			
@@ -79,13 +83,24 @@ public class GraphicalChat extends JFrame {
 		send = new JButton("Send");
 		send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateChat();
+				//updateChat();
+				getMessage();
 			}
 		});
 		contentPanel.add(send);
 		
 		setSize(new Dimension(500, 700));
 		setVisible(true);
+	}
+	
+	public PrintWriter getMessage() {
+		try {
+			return new PrintWriter(chatInput.getText());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	private void updateChat() {

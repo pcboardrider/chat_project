@@ -6,6 +6,7 @@
 package chatProject;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -26,7 +27,8 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			Socket s = ss.accept();
-			System.out.println(s);
+			//System.out.println(s);
+			//PrintWriter output = new PrintWriter("output" + s);
 		} catch (IOException e) {
 			System.out.println("Accept failed\n");
 		}
