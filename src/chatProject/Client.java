@@ -21,9 +21,10 @@ public class Client implements Runnable {
 		try (Socket s = new Socket(iP, port)) {
 			new Thread(this).start();
 			System.out.println("connected on " + s);
-			g = new GraphicalChat();
-			Thread MessageClient = new Thread(new MessageClient(s, g));
-			MessageClient.start();
+			new MessageClient(s);
+			//g = new GraphicalChat(this);
+			//Thread MessageClient = new Thread(new MessageClient(s));
+			//MessageClient.start();
 		} catch (UnknownHostException e) {
 			System.out.println("Unknown host");
 		} catch (IOException e) {

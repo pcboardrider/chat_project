@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -34,6 +36,9 @@ public class GraphicalChat extends JFrame {
 	private ArrayList<Integer> keys;
 	
 	public GraphicalChat() {
+		//no args
+	}
+	public GraphicalChat(Socket s) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -67,7 +72,8 @@ public class GraphicalChat extends JFrame {
 				}
 				if (keys.contains(new Integer(KeyEvent.VK_CONTROL)) && keys.contains(new Integer(KeyEvent.VK_ENTER))) {
 					//updateChat();
-					getMessage();
+					getMessage(s);
+					chatInput.setText("");
 				}
 			}
 			
@@ -84,7 +90,8 @@ public class GraphicalChat extends JFrame {
 		send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//updateChat();
-				getMessage();
+				getMessage(s);
+				chatInput.setText("");
 			}
 		});
 		contentPanel.add(send);
@@ -93,14 +100,19 @@ public class GraphicalChat extends JFrame {
 		setVisible(true);
 	}
 	
-	public PrintWriter getMessage() {
+	public PrintWriter getMessage(Socket s) {
+		PrintWriter pw = null;
 		try {
-			return new PrintWriter(chatInput.getText());
-		} catch (FileNotFoundException e) {
+			System.out.println("this is the socket malfuctioning" + s);
+			pw = new PrintWriter(s.getOutputStream());
+			pw.println(chatInput.getText());
+			pw.flush();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		
+		return pw;
 	}
 	
 	private void updateChat() {

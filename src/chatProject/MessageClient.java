@@ -16,9 +16,9 @@ public class MessageClient implements Runnable{
 	private Socket socket;
 	private GraphicalChat gc;
 	PrintWriter output;
-	public MessageClient(Socket s, GraphicalChat g) {
+	public MessageClient(Socket s) {
 		socket = s;
-		gc = g;
+		new Thread(this).start();
 	}
 	
 	public void run() {
@@ -26,6 +26,7 @@ public class MessageClient implements Runnable{
         String stream;
         
 
+		gc = new GraphicalChat(socket);
         try {
         	BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while ((stream = reader.readLine()) != null) {
@@ -36,7 +37,7 @@ public class MessageClient implements Runnable{
 
                     System.out.println(stream + "\n");
                     
-                    output = gc.getMessage();
+                    output = gc.getMessage(socket);
 					
 					System.out.println(output);
                 
