@@ -27,13 +27,35 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			Socket s = ss.accept();
-			PrintWriter output = new PrintWriter(s.getOutputStream());
-			Thread handler = new Thread(new ServerHandler(s, output));
-			handler.start();
-			System.out.println("serving");
+			Thread listener = new Thread(new Listener(s));
+			listener.start();
+			System.out.println("listening");
 		} catch (IOException e) {
-			System.out.println("Accept failed\n");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+	}
+	
+	private class Listener implements Runnable {
+		Socket s;
+		
+		public Listener (Socket sock) {
+			s = sock;
 		}
-
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				//Socket s = ss.accept();
+				PrintWriter output = new PrintWriter(s.getOutputStream());
+				Thread handler = new Thread(new ServerHandler(s, output));
+				handler.start();
+				System.out.println("serving");
+			} catch (IOException e) {
+				System.out.println("Accept failed\n");
+			}
+		}
+		
 	}
 }
