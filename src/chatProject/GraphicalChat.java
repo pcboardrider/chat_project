@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -33,7 +35,7 @@ public class GraphicalChat extends JFrame {
 	private JButton send;
 	private ArrayList<Integer> keys;
 	
-	public GraphicalChat() {
+	public GraphicalChat(Socket s) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -67,7 +69,7 @@ public class GraphicalChat extends JFrame {
 				}
 				if (keys.contains(new Integer(KeyEvent.VK_CONTROL)) && keys.contains(new Integer(KeyEvent.VK_ENTER))) {
 					//updateChat();
-					getMessage();
+					getMessage(s);
 				}
 			}
 			
@@ -84,7 +86,7 @@ public class GraphicalChat extends JFrame {
 		send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//updateChat();
-				getMessage();
+				getMessage(s);
 			}
 		});
 		contentPanel.add(send);
@@ -93,11 +95,21 @@ public class GraphicalChat extends JFrame {
 		setVisible(true);
 	}
 	
-	public PrintWriter getMessage() {
-		PrintWriter pw = new PrintWriter(System.out);
-		pw.println(chatInput.getText());
-		pw.flush();
-		return pw;
+	public String getMessage(Socket s) {
+		String message = chatInput.getText();
+//		PrintWriter pw = new PrintWriter(System.out);
+//		pw.println(chatInput.getText());
+//		pw.flush();
+		try {
+			PrintWriter w = new PrintWriter(s.getOutputStream());
+			w.println("gc pw = " +chatInput.getText());
+			w.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		chatInput.setText("");
+		return message;
 	}
 	
 	private void updateChat() {
@@ -113,6 +125,6 @@ public class GraphicalChat extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new GraphicalChat();
+		//new GraphicalChat();
 	}
 }

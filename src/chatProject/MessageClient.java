@@ -12,62 +12,32 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class MessageClient implements Runnable{
+public class MessageClient implements Runnable {
 	private Socket socket;
 	private GraphicalChat gc;
-	PrintWriter output;
-	public MessageClient(Socket s, GraphicalChat g) {
+	private BufferedReader reader;
+	
+	public MessageClient(Socket s, GraphicalChat g, BufferedReader r) {
 		socket = s;
 		gc = g;
+		reader = r;
 	}
 	
 	public void run() {
         //String[] data;
         String stream;
-        
+        System.out.println("mc running");
 
         try {
-        	BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            while ((stream = reader.readLine()) != null) {
+        	while ((stream = reader.readLine()) != null) {
 
                 //data = stream.split(":");
 
-                 
 
-                    System.out.println(stream + "\n");
-                    
-                    output = gc.getMessage();
-					
-					System.out.println(output);
-                
+                    System.out.println(stream + "=stream\n");  // not working
              
             }
-       }catch(Exception ex) {
+       } catch(Exception ex) {
        }
     }
-	
-	
-//	private Socket socket;
-//	private BufferedReader reader;
-//
-//	public MessageClient(Socket s) {
-//		socket = s;
-//		try {
-//			reader  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		new Thread(this).start();
-//		System.out.println("started a message thread");
-//	}
-//
-//
-//	@Override
-//	public void run() {
-//		// TODO Auto-generated method stub
-//		System.out.println(reader);
-//		
-//	}
-
 }

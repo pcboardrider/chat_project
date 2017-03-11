@@ -27,8 +27,10 @@ public class Server implements Runnable {
 	public void run() {
 		try {
 			Socket s = ss.accept();
-			//System.out.println(s);
-			//PrintWriter output = new PrintWriter("output" + s);
+			PrintWriter output = new PrintWriter(s.getOutputStream());
+			Thread handler = new Thread(new ServerHandler(s, output));
+			handler.start();
+			System.out.println("serving");
 		} catch (IOException e) {
 			System.out.println("Accept failed\n");
 		}
