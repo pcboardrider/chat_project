@@ -39,12 +39,12 @@ public class Client implements Runnable {
 		Thread messenger = new Thread(new MessageClient(s, g, reader));
 		messenger.start();
 		System.out.println("client running");
-		try {
-			writer.println(g.getMessage(s));
-			writer.flush();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			writer.println(g.getMessage(s));
+//			writer.flush();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }

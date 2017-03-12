@@ -102,7 +102,7 @@ public class GraphicalChat extends JFrame {
 //		pw.flush();
 		try {
 			PrintWriter w = new PrintWriter(s.getOutputStream());
-			w.println("gc pw = " +chatInput.getText());
+			w.println(chatInput.getText());
 			w.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

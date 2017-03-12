@@ -35,7 +35,7 @@ public class ServerHandler implements Runnable {
 		System.out.println("handling");
 		try {
 			while ((message = reader.readLine()) != null) {
-				System.out.println("serv hand message = " +message);
+				System.out.println(message);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
