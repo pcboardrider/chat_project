@@ -5,6 +5,8 @@
 //
 package chatProject;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,31 +16,36 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 public class User extends javax.swing.JFrame {
-	String username;
-	String address;
-	String serverIP = "localhost";
-	int port = 8090;
-	Socket sock;
-	BufferedReader reader;
-	PrintWriter writer;
-	Boolean online = false;
+	private String username;
+	private InetAddress address;
+	int port;
+	private Socket sock;
+	private BufferedReader reader;
+	private PrintWriter writer;
 	private JTextArea chatDisplay;
 	private JTextArea chatType;
 	static int windowOffset = 0;
 
-	public User() {
+	public User(InetAddress a, int p) {
+		address = a;
+		port = p;
 		createGUI();
 	}
 
@@ -54,7 +61,7 @@ public class User extends javax.swing.JFrame {
 					chatDisplay.setCaretPosition(chatDisplay.getDocument().getLength());
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				chatDisplay.append("Problem reading incoming data");
 				e.printStackTrace();
 			} 
 		}
@@ -71,7 +78,7 @@ public class User extends javax.swing.JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		contentPanel.setLayout(new BorderLayout());
 		add(contentPanel);
 
 		JPanel requestUser = new JPanel();
@@ -97,13 +104,39 @@ public class User extends javax.swing.JFrame {
 		requestUser.add(userLabel);
 		requestUser.add(userName);
 		requestUser.add(enter);
-		contentPanel.add(requestUser);
+		contentPanel.add(requestUser, BorderLayout.NORTH);
 		
-		contentPanel.add(chatDisplay);
+		chatDisplay.setEditable(false);
+		formatArea(chatDisplay);
+		JScrollPane scrollOutput = new JScrollPane(chatDisplay);
+		contentPanel.add(scrollOutput);
+		
+		JPanel inputArea = new JPanel();
+		inputArea.setLayout(new BoxLayout(inputArea, BoxLayout.Y_AXIS));
 		JLabel messageInput = new JLabel("Type your message below:");
-		contentPanel.add(messageInput);
-		chatType.setRows(4);
-		contentPanel.add(chatType);
+		inputArea.add(messageInput);
+		
+		ArrayList<Integer> keys = new ArrayList<Integer>();
+		chatType.setRows(5);
+		chatType.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (!keys.contains(e.getKeyCode())) {
+					keys.add(new Integer(e.getKeyCode()));
+				}
+				if (keys.contains(new Integer(KeyEvent.VK_CONTROL)) && keys.contains(new Integer(KeyEvent.VK_ENTER))) {
+					sendChat();
+				}
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				keys.remove(new Integer(e.getKeyCode()));
+			}
+		});
+		formatArea(chatType);
+		JScrollPane scrollInput = new JScrollPane(chatType);
+		inputArea.add(scrollInput);
 		
 		JButton send = new JButton("Send");
 		send.addActionListener(new ActionListener() {
@@ -111,7 +144,8 @@ public class User extends javax.swing.JFrame {
 				sendChat();
 			}
 		});
-		contentPanel.add(send);
+		inputArea.add(send);
+		contentPanel.add(inputArea, BorderLayout.SOUTH);
 		
 		setSize(new Dimension(500, 700));
 		setLocation(windowOffset * 100, 125);
@@ -119,15 +153,22 @@ public class User extends javax.swing.JFrame {
 		windowOffset++;
 	}
 	
+	private void formatArea(JTextArea area) {
+		Border blackline = BorderFactory.createLineBorder(Color.black, 1);
+		area.setLineWrap(true);
+		area.setWrapStyleWord(true);
+		area.setBorder(blackline);
+	}
+	
 	private void connect() {
 		try {
-			sock = new Socket(serverIP, port);
+			sock = new Socket(address, port);
 			reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			writer = new PrintWriter(sock.getOutputStream());
 			writer.flush();
 			//online = true;
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			chatDisplay.append("Connection failed");
 			e1.printStackTrace();
 		} 
 		createListener();
@@ -142,18 +183,4 @@ public class User extends javax.swing.JFrame {
          }
          chatType.setText("");
 	}
-
-	
-	
-
-//	private javax.swing.JTextArea chatDisplay;
-//	private javax.swing.JTextArea chatType;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JScrollPane jScrollPane2;
-	private javax.swing.JScrollPane jScrollPane3;
-	private javax.swing.JButton sendButton;
-	private javax.swing.JTextField usernameField;
-	private javax.swing.JTextArea usersList;
-	// End of variables declaration
-
 }

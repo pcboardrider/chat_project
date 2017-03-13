@@ -15,14 +15,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Connection {
-	ArrayList output;
+	private int port;
+	ArrayList<PrintWriter> output;
 	ArrayList<String> users;
-	
+
 	public class Handler implements Runnable {
 		BufferedReader reader;
 		Socket sock;
 		PrintWriter client;
-		
+
 		public Handler(Socket socket, PrintWriter stream) {
 			client = stream;
 			try {
@@ -30,7 +31,7 @@ public class Connection {
 				reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			} catch (IOException e) {
 				e.printStackTrace();
-			} 
+			}
 		}
 
 		@Override
@@ -42,7 +43,7 @@ public class Connection {
 			try {
 				while ((message = reader.readLine()) != null) {
 					data = message.split("~");
-					
+
 					if (data[2].equals(connect)) {
 						sendOut((data[0] + "~" + data[1] + "~" + chat));
 						addUser(data[0]);
@@ -51,24 +52,24 @@ public class Connection {
 					}
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+			}
 		}
 	}
-	
-	public Connection() {
+
+	public Connection(int p) {
+		port = p;
 		Thread server = new Thread(new ServerStarter());
 		server.start();
 	}
-	
+
 	public class ServerStarter implements Runnable {
 		public void run() {
 			output = new ArrayList<>();
 			users = new ArrayList<>();
+			ServerSocket ss = null;
 			try {
-				ServerSocket ss = new ServerSocket(8090);
-				
+				ss = new ServerSocket(port);
 				while (true) {
 					Socket client = ss.accept();
 					PrintWriter writer = new PrintWriter(client.getOutputStream());
@@ -77,8 +78,13 @@ public class Connection {
 					listener.start();
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				try {
+					ss.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -95,16 +101,16 @@ public class Connection {
 			sendOut(message);
 		}
 	}
-	
+
 	private void sendOut(String message) {
-		Iterator list = output.iterator();
+		Iterator<PrintWriter> list = output.iterator();
 		while (list.hasNext()) {
 			try {
 				PrintWriter writer = (PrintWriter) list.next();
 				writer.println(message);
 				writer.flush();
 			} finally {
-				// TODO
+				// I don't know what to do here
 			}
 		}
 	}
