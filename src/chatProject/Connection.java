@@ -1,8 +1,3 @@
-// Assignment: ChatProject
-// Program:    ConnectionGUI
-// Created:    Mar 12, 2017
-// Author:     lcattle - Lauren Ribeiro
-//
 package chatProject;
 
 import java.io.BufferedReader;
@@ -16,8 +11,8 @@ import java.util.Iterator;
 
 public class Connection {
 	private int port;
-	ArrayList<PrintWriter> output;
-	ArrayList<String> users;
+	private ArrayList<PrintWriter> output;
+	private ArrayList<String> users;
 
 	public class Handler implements Runnable {
 		BufferedReader reader;
@@ -39,14 +34,19 @@ public class Connection {
 			String message;
 			String connect = "Connect";
 			String chat = "Chat";
+			String deny = "DENY";
 			String[] data;
 			try {
 				while ((message = reader.readLine()) != null) {
 					data = message.split("~");
 
 					if (data[2].equals(connect)) {
-						sendOut((data[0] + "~" + data[1] + "~" + chat));
-						addUser(data[0]);
+						if (users.contains(data[0])) {
+							sendOut(data[0] + "~ ~" + deny);
+						} else {
+							sendOut(data[0] + "~ ~ACK");
+							users.add(data[0]);
+						}
 					} else if (data[2].equals(chat)) {
 						sendOut(message);
 					}
@@ -89,19 +89,6 @@ public class Connection {
 		}
 	}
 
-	private void addUser(String data) {
-		String message;
-		String add = "~ ~Connect";
-		String name = data;
-		users.add(name);
-		String[] temp = new String[(users.size())];
-		users.toArray(temp);
-		for (String user : users) {
-			message = (user + add);
-			sendOut(message);
-		}
-	}
-
 	private void sendOut(String message) {
 		Iterator<PrintWriter> list = output.iterator();
 		while (list.hasNext()) {
@@ -109,8 +96,8 @@ public class Connection {
 				PrintWriter writer = (PrintWriter) list.next();
 				writer.println(message);
 				writer.flush();
-			} finally {
-				// I don't know what to do here
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

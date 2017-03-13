@@ -1,8 +1,3 @@
-// Assignment: ChatProject
-// Program:    User
-// Created:    Mar 12, 2017
-// Author:     lcattle - Lauren Ribeiro
-//
 package chatProject;
 
 import java.awt.BorderLayout;
@@ -19,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -33,6 +29,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 public class User extends javax.swing.JFrame {
+	private static final long serialVersionUID = 3815623818891390942L;
 	private String username;
 	private InetAddress address;
 	int port;
@@ -57,8 +54,19 @@ public class User extends javax.swing.JFrame {
 			try {
 				while ((stream = reader.readLine()) != null) {
 					data = stream.split("~");
-					chatDisplay.append(data[0] + ": " + data[1] + "\n");
-					chatDisplay.setCaretPosition(chatDisplay.getDocument().getLength());
+					if (data[2].equals("ACK")) {
+						if (chatDisplay.getText().equals("")) {
+							generateChat();
+						}
+						chatDisplay.append(data[0] + " has connected\n");
+					} else if (data[2].equals("DENY")) {
+						if (data[0].equals(username)) {
+							chatDisplay.append("That username is not available\n");
+						}
+					} else {
+						chatDisplay.append(data[0] + ": " + data[1] + "\n");
+						chatDisplay.setCaretPosition(chatDisplay.getDocument().getLength());
+					}
 				}
 			} catch (IOException e) {
 				chatDisplay.append("Problem reading incoming data");
@@ -165,8 +173,8 @@ public class User extends javax.swing.JFrame {
 			sock = new Socket(address, port);
 			reader = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			writer = new PrintWriter(sock.getOutputStream());
+			writer.println(username + "~ ~Connect");
 			writer.flush();
-			//online = true;
 		} catch (IOException e1) {
 			chatDisplay.append("Connection failed");
 			e1.printStackTrace();
@@ -179,8 +187,19 @@ public class User extends javax.swing.JFrame {
             writer.println(username + "~" + chatType.getText() + "~Chat");
             writer.flush(); 
          } catch (Exception ex) {
-             chatDisplay.append("Message was not sent. \n");
+            chatDisplay.append("Message was not sent. \n");
          }
          chatType.setText("");
+	}
+	
+	private void generateChat() {
+		StudentSet thisSet = new StudentSet();
+		Random rand = new Random();
+		int randomGroup = rand.nextInt(thisSet.groups.size());
+		for (Group g : thisSet.groups) {
+			if (thisSet.groups.indexOf(g) == randomGroup) {
+				chatDisplay.append(g.groupChat().toString());
+			}
+		}
 	}
 }

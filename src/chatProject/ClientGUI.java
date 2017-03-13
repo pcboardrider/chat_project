@@ -1,8 +1,3 @@
-// Assignment: ChatProject
-// Program:    ClientGUI
-// Created:    Mar 7, 2017
-// Author:     lcattle - Lauren Ribeiro
-//
 package chatProject;
 
 import java.awt.Dimension;
@@ -25,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 public class ClientGUI extends JFrame {
 
+	private static final long serialVersionUID = -7944366744303557240L;
 	private int port = 8090;
 	private InetAddress address;
 
