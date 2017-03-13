@@ -78,11 +78,13 @@ public class ClientGUI extends JFrame {
 	}
 
 	private void startServer() {
-		new Server(port);
+		//new Server(port);
+		new Connection();
 	}
 
 	private void startClient() {
-		new Client(address, port);
+		//new Client(address, port);
+		new User();
 	}
 
 	private boolean serverListening(InetAddress address, int port) {
